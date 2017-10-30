@@ -36,10 +36,10 @@ module NemLottery
     end
 
     def self.is_target_mosaic_transfer?(transefer: transefer_transaction)
+      return false unless is_timestamp_less_than_endtime(transefer.timeStamp)
       return false if transefer.mosaics.nil?
       transefer.mosaics.each do |mosaic|
         if is_target_mosaic_id?(mosaic[:mosaicId])
-          p mosaic
           if mosaic[:quantity] >= MINMU_MOSAIC_AMOUNT
             return true
           end
@@ -64,6 +64,12 @@ module NemLottery
       return false if transefer_transaction.nil?
 
       is_target_mosaic_transfer?(transefer: transefer_transaction)
+    end
+
+    def self.is_timestamp_less_than_endtime(timestamp)
+      t = Nis::Util.parse_nemtime(timestamp)
+      end_time = Time.parse(END_LOTTERY_TIME)
+      t < end_time
     end
 
     def self.write_addresses(addresses, filepath: path)

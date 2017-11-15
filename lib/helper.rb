@@ -87,5 +87,18 @@ module NemLottery
     def self.write_alternate_addresses(alternate_addresses)
       write_addresses(alternate_addresses, filepath: ALTERNATE_EXPORT_PATH)
     end
+
+    def self.send_message(address: address, message: message, account_key: account_key)
+      p address
+      p message
+      p account_key
+      p NIS_HOST
+      nis = Nis.new(host: NIS_HOST)
+      keyPair = Nis::Keypair.new(account_key)
+      tx = Nis::Transaction::Transfer.new(address, 0, message, {})
+      req = Nis::Request::Announce.new(tx, keyPair)
+      res = nis.transaction_announce(req)
+      p "TransactionHash: #{res.transaction_hash}"
+    end
   end
 end

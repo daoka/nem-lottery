@@ -14,8 +14,9 @@ module NemLottery
       @alternate_count = conf["alternate_count"]
       @notificate_private_key = conf["notificate_private_key"]
       @message = conf["notify_message"]
+      @amount = conf["amount"]
     end
 
-    attr_reader :address, :begin_time, :end_time, :target_mosaic, :winner_count, :alternate_count, :notificate_private_key, :minimu_mosaic_amount, :message
+    attr_reader :address, :begin_time, :end_time, :target_mosaic, :winner_count, :alternate_count, :notificate_private_key, :minimu_mosaic_amount, :message, :amount
   end
 end

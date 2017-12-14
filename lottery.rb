@@ -13,11 +13,12 @@ config = NemLottery::Config.new(env)
 ADDRESS = config.address
 BEGIN_LOTTERY_TIME = config.begin_time
 END_LOTTERY_TIME = config.end_time
-NIS_HOST = "192.3.61.243"
+NIS_HOST = "alice2.nem.ninja"
 TARGET_MOSAIC = config.target_mosaic
 MINMU_MOSAIC_AMOUNT = config.minimu_mosaic_amount
 WINNER_COUNT = config.winner_count
 ALTERNATE_COUNT = config.alternate_count
+AMOUNT = config.amount
 WINNER_EXPORT_PATH = "./tmp/" + env + "_winner.txt"
 ALTERNATE_EXPORT_PATH = "./tmp/" + env + "_alternate.txt"
 
@@ -44,7 +45,7 @@ end
 
 metadatas.each do |metadata|
   if NemLottery::Helper.is_target_transaction(metadata: metadata)
-    address_obj = Nis::Unit::Address.from_public_key(metadata.transaction.signer)
+    address_obj = Nis::Unit::Address.from_public_key(metadata.transaction.signer, :mainnet)
     applicant_addresses << address_obj.value
   end
 end

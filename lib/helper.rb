@@ -49,7 +49,6 @@ module NemLottery
     end
 
     def self.is_target_transaction(metadata: metadata)
-      p metadata.transaction.class
       transefer_transaction = nil
       if metadata.transaction.is_a?(Nis::Struct::TransferTransaction)
         transefer_transaction = metadata.transaction
@@ -88,14 +87,14 @@ module NemLottery
       write_addresses(alternate_addresses, filepath: ALTERNATE_EXPORT_PATH)
     end
 
-    def self.send_message(address: address, message: message, account_key: account_key)
+    def self.send_message(address: address, message: message, account_key: account_key, amount: amount = 0)
       p address
       p message
       p account_key
       p NIS_HOST
       nis = Nis.new(host: NIS_HOST)
       keyPair = Nis::Keypair.new(account_key)
-      tx = Nis::Transaction::Transfer.new(address, 0, message, {})
+      tx = Nis::Transaction::Transfer.new(address, amount, message, {network: :mainnet})
       req = Nis::Request::Announce.new(tx, keyPair)
       res = nis.transaction_announce(req)
       p "TransactionHash: #{res.transaction_hash}"
